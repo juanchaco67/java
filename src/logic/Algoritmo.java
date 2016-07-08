@@ -7,7 +7,7 @@ import org.omg.CORBA.OMGVMCID;
 public class Algoritmo {
 	private static final int CANTIDAD_POBLACION=1000;
 	private static final double PROBABILIDAD_MUTACION=0.9;
-	private static final int CANTIDAD_PADRES=990;
+	private static final int CANTIDAD_PADRES=900;
 	private ArrayList<Individuo>poblacion;
 	private int numero[];
 	public Algoritmo() {
@@ -20,7 +20,7 @@ public class Algoritmo {
 		}		
 
 		bucle:
-			for (int k = 0; k < 20000; k++) {	
+			for (int k = 0; k < 40000; k++) {	
 				ArrayList<Individuo>padre=seleccionarIndividuosFitnes();
 				poblacion.clear();
 				for (int i = 0; i <CANTIDAD_PADRES; i++) 
@@ -29,10 +29,12 @@ public class Algoritmo {
 					Individuo individuo=cruce(padre);		
 					poblacion.add(individuo);
 
-					if(individuo.getFitnes()==243)
+					if(individuo.getFitnes()==241)					
 						break bucle;			
+
 				}
 			}	
+//mafufia
 	}
 
 	private void crearPoblacion(){
@@ -96,6 +98,7 @@ public class Algoritmo {
 		for (int i = poblacion.size()-CANTIDAD_PADRES; i < poblacion.size(); i++) {
 			padres.add(poblacion.get(i));
 		}		
+
 		return padres;
 	}
 	/**
@@ -161,10 +164,10 @@ public class Algoritmo {
 				}
 			}
 		}
-		if(individuo.getFitnes()>=239)
+		if(individuo.getFitnes()>=240)
 			individuo=mutacion(individuo);	
 		individuo.calcularFitnes();	
-	
+
 		individuo.coincidencias();
 		System.out.println("INDIVIDUO--------------------");
 		individuo.mostrarCromosoma();
@@ -177,8 +180,12 @@ public class Algoritmo {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 9; j++) {
 					if(individuo.getCromosomaActivo()[i][j]==false){
-						individuo.getCromosoma()[i][j]=aleatorio(9,1);
-//						break bucle;
+						int datoNuevo=individuo.getCromosoma()[i][j];
+						int dato=aleatorio(9, 1);
+						dato=numeroAleatorioRepetido(dato, datoNuevo, 9,1);
+						individuo.getCromosoma()[i][j]=dato;
+
+						break bucle;
 					}
 				}
 			}
