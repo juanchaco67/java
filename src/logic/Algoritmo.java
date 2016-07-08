@@ -22,19 +22,24 @@ public class Algoritmo {
 		bucle:
 			for (int k = 0; k < 40000; k++) {	
 				ArrayList<Individuo>padre=seleccionarIndividuosFitnes();
+
 				poblacion.clear();
-				for (int i = 0; i <CANTIDAD_PADRES; i++) 
+				for (int i = 0; i <CANTIDAD_PADRES; i++){ 
+//					padre.get(i).coincidencias();
 					poblacion.add(padre.get(i));	
+					//					System.out.println("PADRE------------------------");
+					//					padre.get(i).mostrarCromosomaActivo();
+				}
 				for (int i = 0; i < CANTIDAD_POBLACION-CANTIDAD_PADRES; i++) {
 					Individuo individuo=cruce(padre);		
 					poblacion.add(individuo);
 
-					if(individuo.getFitnes()==241)					
+					if(individuo.getFitnes()==243)					
 						break bucle;			
 
 				}
 			}	
-//mafufia
+		//mafufia
 	}
 
 	private void crearPoblacion(){
@@ -139,32 +144,34 @@ public class Algoritmo {
 					individuo.getCromosomaActivoEstaticas()[i][j]=padre.get(0).getCromosomaActivoEstaticas()[i][j];
 				if(padre.get(pos1).getCromosomaActivo()[i][j]==false && padre.get(pos2).getCromosomaActivo()[i][j]==false)
 				{	
-					int dato=0,datoNuevo=0;
-					opcionNueva=opcion;
-					opcion=aleatorio(3, 1);
-					opcion=numeroAleatorioRepetido(opcion,opcionNueva,3,1);
-					switch (opcion) {
-					case 1:			
-						datoNuevo=individuo.getCromosoma()[i][j];
-						dato=aleatorio(9, 1);
-						dato=numeroAleatorioRepetido(dato, datoNuevo, 9,1);
-						individuo.getCromosomaActivo()[i][j]=false;
-						individuo.getCromosoma()[i][j]=dato;
-						break;
-					case 2:
-						individuo.getCromosomaActivo()[i][j]=false;
-						individuo.getCromosoma()[i][j]=padre.get(pos2).getCromosoma()[i][j];
-						break;
-					case 3:
-						individuo.getCromosomaActivo()[i][j]=false;
-						individuo.getCromosoma()[i][j]=padre.get(pos1).getCromosoma()[i][j];
-						break;		
+				
+						int dato=0,datoNuevo=0;
+						opcionNueva=opcion;
+						opcion=aleatorio(3, 1);
+						opcion=numeroAleatorioRepetido(opcion,opcionNueva,3,1);
+						switch (opcion) {
+						case 1:			
+							datoNuevo=individuo.getCromosoma()[i][j];
+							dato=aleatorio(9, 1);
+							dato=numeroAleatorioRepetido(dato, datoNuevo, 9,1);
+							individuo.getCromosomaActivo()[i][j]=false;
+							individuo.getCromosoma()[i][j]=dato;
+							break;
+						case 2:
+							individuo.getCromosomaActivo()[i][j]=false;
+							individuo.getCromosoma()[i][j]=padre.get(pos2).getCromosoma()[i][j];
+							break;
+						case 3:
+							individuo.getCromosomaActivo()[i][j]=false;
+							individuo.getCromosoma()[i][j]=padre.get(pos1).getCromosoma()[i][j];
+							break;		
+						
+					
 					}
-
 				}
 			}
 		}
-		if(individuo.getFitnes()>=240)
+		if(individuo.getFitnes()>=241)
 			individuo=mutacion(individuo);	
 		individuo.calcularFitnes();	
 
