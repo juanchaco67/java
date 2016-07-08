@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.omg.CORBA.OMGVMCID;
 
 public class Algoritmo {
-	private static final int CANTIDAD_POBLACION=600;
+	private static final int CANTIDAD_POBLACION=1000;
 	private static final double PROBABILIDAD_MUTACION=0.9;
-	private static final int CANTIDAD_PADRES=150;
+	private static final int CANTIDAD_PADRES=900;
 	private ArrayList<Individuo>poblacion;
 	private int numero[];
 	public Algoritmo() {
@@ -20,7 +20,7 @@ public class Algoritmo {
 		}		
 
 		bucle:
-			for (int k = 0; k < 1000; k++) {	
+			for (int k = 0; k < 20000; k++) {	
 				ArrayList<Individuo>padre=seleccionarIndividuosFitnes();
 				poblacion.clear();
 				for (int i = 0; i <CANTIDAD_PADRES; i++) 
@@ -37,14 +37,15 @@ public class Algoritmo {
 
 	private void crearPoblacion(){
 		int cromosoma[][]={
-				{0,0,0,0,0,0,0,1,0,0,0,0},{4,0,0,0,0,0,0,0,0,0,0,0},{0,2,0,0,0,0,0,0,0,0,0,0},
-				{0,0,0,0,5,0,4,0,7,0,0,0},{0,0,8,0,0,0,3,0,0,0,0,0},{0,0,1,0,9,0,0,0,0,0,0,0},
-				{3,0,0,4,0,0,2,0,0,0,0,0},{0,5,0,1,0,0,0,0,0,0,0,0},{0,0,0,8,0,6,0,0,0,0,0,0}
+				{0,0,0,0,0,6,0,0,7,0,0,0},{9,4,0,0,0,0,8,1,0,0,0,0},{0,2,0,0,1,0,0,0,0,0,0,0},
+				{0,9,2,0,0,0,0,0,0,0,0,0},{0,0,8,0,0,0,3,0,0,0,0,0},{0,0,0,0,7,0,0,2,1,0,0,0},
+				{0,0,0,0,4,0,0,0,8,0,0,0},{4,0,0,3,0,0,7,9,0,0,0,0},{0,8,0,9,0,0,0,0,2,0,0,0}
 		};
+
 		boolean cromosomaActivo[][]={
-				{false,false,false,false,false,false,false,true,false,false,false,false},{true,false,false,false,false,false,false,false,false},{false,true,false,false,false,false,false,false,false,false,false,false},
-				{false,false,false,false,true,false,true,false,true,false,false,false},{false,false,true,false,false,false,true,false,false,false,false,false},{false,false,true,false,true,false,false,false,false,false,false,false},
-				{true,false,false,true,false,false,true,false,false,false,false,false},{false,true,false,true,false,false,false,false,false,false,false,false},{false,false,false,true,false,true,false,false,false,false,false,false}
+				{false,false,false,false,false,true,false,false,true,false,false,false},{true,true,false,false,false,false,true,true,false,false,false,false},{false,true,false,false,true,false,false,false,false,false,false,false},
+				{false,true,true,false,false,false,false,false,false,false,false,false},{false,false,true,false,false,false,true,false,false,false,false,false},{false,false,false,false,true,false,false,true,true,false,false,false},
+				{false,false,false,false,true,false,false,false,true,false,false,false},{true,false,false,true,false,false,true,true,false,false,false,false},{false,true,false,true,false,false,false,false,true,false,false,false}
 		};
 		for (int i = 0; i < CANTIDAD_POBLACION; i++) {
 			poblacion.add(new Individuo());
@@ -141,8 +142,11 @@ public class Algoritmo {
 					opcion=numeroAleatorioRepetido(opcion,opcionNueva,3,1);
 					switch (opcion) {
 					case 1:			
+						datoNuevo=individuo.getCromosoma()[i][j];
+						dato=aleatorio(9, 1);
+						dato=numeroAleatorioRepetido(dato, datoNuevo, 9,1);
 						individuo.getCromosomaActivo()[i][j]=false;
-						individuo.getCromosoma()[i][j]=aleatorio(9, 1);
+						individuo.getCromosoma()[i][j]=dato;
 						break;
 					case 2:
 						individuo.getCromosomaActivo()[i][j]=false;
@@ -157,7 +161,8 @@ public class Algoritmo {
 				}
 			}
 		}
-//		individuo=mutacion(individuo);		
+		
+		individuo=mutacion(individuo);		
 		individuo.calcularFitnes();		
 		individuo.coincidencias();
 		System.out.println("INDIVIDUO--------------------");
