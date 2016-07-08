@@ -7,7 +7,7 @@ import org.omg.CORBA.OMGVMCID;
 public class Algoritmo {
 	private static final int CANTIDAD_POBLACION=1000;
 	private static final double PROBABILIDAD_MUTACION=0.9;
-	private static final int CANTIDAD_PADRES=900;
+	private static final int CANTIDAD_PADRES=990;
 	private ArrayList<Individuo>poblacion;
 	private int numero[];
 	public Algoritmo() {
@@ -161,9 +161,10 @@ public class Algoritmo {
 				}
 			}
 		}
-		
-		individuo=mutacion(individuo);		
-		individuo.calcularFitnes();		
+		if(individuo.getFitnes()>=239)
+			individuo=mutacion(individuo);	
+		individuo.calcularFitnes();	
+	
 		individuo.coincidencias();
 		System.out.println("INDIVIDUO--------------------");
 		individuo.mostrarCromosoma();
@@ -177,7 +178,7 @@ public class Algoritmo {
 				for (int j = 0; j < 9; j++) {
 					if(individuo.getCromosomaActivo()[i][j]==false){
 						individuo.getCromosoma()[i][j]=aleatorio(9,1);
-						break bucle;
+//						break bucle;
 					}
 				}
 			}
