@@ -7,7 +7,7 @@ import org.omg.CORBA.OMGVMCID;
 public class Algoritmo {
 	private static final int CANTIDAD_POBLACION=600;
 	private static final double PROBABILIDAD_MUTACION=0.9;
-	private static final int CANTIDAD_PADRES=200;
+	private static final int CANTIDAD_PADRES=150;
 	private ArrayList<Individuo>poblacion;
 	private int numero[];
 	public Algoritmo() {
@@ -20,7 +20,7 @@ public class Algoritmo {
 		}		
 
 		bucle:
-			for (int k = 0; k < 50000; k++) {	
+			for (int k = 0; k < 1000; k++) {	
 				ArrayList<Individuo>padre=seleccionarIndividuosFitnes();
 				poblacion.clear();
 				for (int i = 0; i <CANTIDAD_PADRES; i++) 
@@ -141,6 +141,7 @@ public class Algoritmo {
 					opcion=numeroAleatorioRepetido(opcion,opcionNueva,3,1);
 					switch (opcion) {
 					case 1:			
+						individuo.getCromosomaActivo()[i][j]=false;
 						individuo.getCromosoma()[i][j]=aleatorio(9, 1);
 						break;
 					case 2:
@@ -150,97 +151,78 @@ public class Algoritmo {
 					case 3:
 						individuo.getCromosomaActivo()[i][j]=false;
 						individuo.getCromosoma()[i][j]=padre.get(pos1).getCromosoma()[i][j];
-						break;
-
-					case 4:
-						int dato1=padre.get(pos1).getCromosoma()[i][j];
-						int dato2=padre.get(pos2).getCromosoma()[i][j];
-						int resulDato=0;
-						if(dato1+dato2>=1 && dato1+dato2<=9)
-							resulDato=dato1+dato2;
-						else
-							resulDato=aleatorio(9,1);
-//						else if(dato1-dato2>=1 && dato1-dato2 <=9)
-//							resulDato=dato1-dato2;
-//						else if(dato1*dato2>=1 )
-							resulDato=dato1-dato2;
-						individuo.getCromosomaActivo()[i][j]=false;
-						individuo.getCromosoma()[i][j]=resulDato;
-						break;
+						break;		
 					}
-				
-			}
 
-
-
-		}
-	}
-	//		individuo=mutacion(individuo);		
-	individuo.calcularFitnes();		
-	individuo.coincidencias();
-	System.out.println("INDIVIDUO--------------------");
-	individuo.mostrarCromosoma();
-	System.out.println("-----------------------");
-	individuo.mostrarCromosomaActivo();
-	return individuo;
-}
-private Individuo mutacion(Individuo individuo){
-	bucle:
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				if(individuo.getCromosomaActivo()[i][j]==false){
-					individuo.getCromosoma()[i][j]=aleatorio(9,1);
-					break bucle;
 				}
 			}
 		}
-return individuo;
-}
-private void mostraPoblacion(){
-	for (int i = 0; i < poblacion.size(); i++) {
-		System.out.println("-----------------------------");
-		poblacion.get(i).mostrarCromosoma();
+//		individuo=mutacion(individuo);		
+		individuo.calcularFitnes();		
+		individuo.coincidencias();
+		System.out.println("INDIVIDUO--------------------");
+		individuo.mostrarCromosoma();
+		System.out.println("-----------------------");
+		individuo.mostrarCromosomaActivo();
+		return individuo;
 	}
-
-}
-private void mostrarActivos(){
-	for (int i = 0; i < poblacion.size(); i++) {
-		poblacion.get(i).mostrarCromosomaActivo();
-		System.out.println();
+	private Individuo mutacion(Individuo individuo){
+		bucle:
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					if(individuo.getCromosomaActivo()[i][j]==false){
+						individuo.getCromosoma()[i][j]=aleatorio(9,1);
+						break bucle;
+					}
+				}
+			}
+	return individuo;
 	}
-}
-private void mostrarActivosEstaticos(){
-	for (int i = 0; i < poblacion.size(); i++) {
-		poblacion.get(i).mostrarCromosomaActivoEstatico();
-		System.out.println();
+	private void mostraPoblacion(){
+		for (int i = 0; i < poblacion.size(); i++) {
+			System.out.println("-----------------------------");
+			poblacion.get(i).mostrarCromosoma();
+		}
+
 	}
-}
-public int numeroAleatorioRepetido(int dato,int datoNuevo,int maximoAleatoiro,int minimo){
+	private void mostrarActivos(){
+		for (int i = 0; i < poblacion.size(); i++) {
+			poblacion.get(i).mostrarCromosomaActivo();
+			System.out.println();
+		}
+	}
+	private void mostrarActivosEstaticos(){
+		for (int i = 0; i < poblacion.size(); i++) {
+			poblacion.get(i).mostrarCromosomaActivoEstatico();
+			System.out.println();
+		}
+	}
+	public int numeroAleatorioRepetido(int dato,int datoNuevo,int maximoAleatoiro,int minimo){
 
-	if(dato==datoNuevo){
-		while(dato==datoNuevo)
-			dato=aleatorio(maximoAleatoiro, minimo);
-		return dato;
-	}else
-		return dato;
+		if(dato==datoNuevo){
+			while(dato==datoNuevo)
+				dato=aleatorio(maximoAleatoiro, minimo);
+			return dato;
+		}else
+			return dato;
 
-}
-private int  aleatorio(int maximo,int minimo){
-	return (int) (Math.random()*maximo+minimo);
-}
-private boolean numeroParImpar(int numero){
+	}
+	private int  aleatorio(int maximo,int minimo){
+		return (int) (Math.random()*maximo+minimo);
+	}
+	private boolean numeroParImpar(int numero){
 
-	if (numero%2==0)
-		return true;
-	else
-		return false;
-}
-public ArrayList<Individuo> getPoblacion() {
-	return poblacion;
-}
-public void setPoblacion(ArrayList<Individuo> poblacion) {
-	this.poblacion = poblacion;
-} 
+		if (numero%2==0)
+			return true;
+		else
+			return false;
+	}
+	public ArrayList<Individuo> getPoblacion() {
+		return poblacion;
+	}
+	public void setPoblacion(ArrayList<Individuo> poblacion) {
+		this.poblacion = poblacion;
+	} 
 
 
 }
