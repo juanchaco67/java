@@ -20,26 +20,54 @@ public class Algoritmo {
 		}		
 
 		bucle:
-			for (int k = 0; k < 40000; k++) {	
+			while(true){	
 				ArrayList<Individuo>padre=seleccionarIndividuosFitnes();
-
 				poblacion.clear();
 				for (int i = 0; i <CANTIDAD_PADRES; i++){ 
-//					padre.get(i).coincidencias();
 					poblacion.add(padre.get(i));	
-					//					System.out.println("PADRE------------------------");
-					//					padre.get(i).mostrarCromosomaActivo();
+
 				}
 				for (int i = 0; i < CANTIDAD_POBLACION-CANTIDAD_PADRES; i++) {
 					Individuo individuo=cruce(padre);		
 					poblacion.add(individuo);
-
 					if(individuo.getFitnes()==243)					
-						break bucle;			
-
+						break bucle;		
 				}
 			}	
-		//mafufia
+//		
+//		ArrayList<Individuo>poIndividuos=new ArrayList<Individuo>();
+//	
+//		for (int i = poblacion.size()-10; i < poblacion.size(); i++) 
+//			poIndividuos.add(poblacion.get(i));		
+//		
+//		crearPoblacion();
+//		for (int i = CANTIDAD_POBLACION-10; i < CANTIDAD_POBLACION; i++) 
+//			poblacion.remove(i);
+//		
+//		for (int i = 0; i < 10; i++) 
+//			poblacion.add(poIndividuos.get(i));
+//
+//		for (int i = 0; i < CANTIDAD_POBLACION; i++) {
+//			poblacion.get(i).calcularFitnes();
+//			poblacion.get(i).coincidencias();	
+//		}	
+//		bucle2:
+//			while(true){	
+//				ArrayList<Individuo>padre=seleccionarIndividuosFitnes();
+//				poblacion.clear();
+//				for (int i = 0; i <CANTIDAD_PADRES; i++){ 
+//					poblacion.add(padre.get(i));	
+//
+//				}
+//				for (int i = 0; i < CANTIDAD_POBLACION-CANTIDAD_PADRES; i++) {
+//					Individuo individuo=cruce(padre);		
+//					poblacion.add(individuo);
+//					if(individuo.getFitnes()==243)					
+//						break bucle2;		
+//				}
+//			}	
+//		//mafufia
+
 	}
 
 	private void crearPoblacion(){
@@ -144,35 +172,51 @@ public class Algoritmo {
 					individuo.getCromosomaActivoEstaticas()[i][j]=padre.get(0).getCromosomaActivoEstaticas()[i][j];
 				if(padre.get(pos1).getCromosomaActivo()[i][j]==false && padre.get(pos2).getCromosomaActivo()[i][j]==false)
 				{	
-				
-						int dato=0,datoNuevo=0;
-						opcionNueva=opcion;
-						opcion=aleatorio(3, 1);
-						opcion=numeroAleatorioRepetido(opcion,opcionNueva,3,1);
-						switch (opcion) {
-						case 1:			
-							datoNuevo=individuo.getCromosoma()[i][j];
-							dato=aleatorio(9, 1);
-							dato=numeroAleatorioRepetido(dato, datoNuevo, 9,1);
-							individuo.getCromosomaActivo()[i][j]=false;
-							individuo.getCromosoma()[i][j]=dato;
-							break;
-						case 2:
-							individuo.getCromosomaActivo()[i][j]=false;
-							individuo.getCromosoma()[i][j]=padre.get(pos2).getCromosoma()[i][j];
-							break;
-						case 3:
-							individuo.getCromosomaActivo()[i][j]=false;
-							individuo.getCromosoma()[i][j]=padre.get(pos1).getCromosoma()[i][j];
-							break;		
-						
-					
+//					System.out.println("false false");
+					int dato=0,datoNuevo=0;
+					opcionNueva=opcion;
+					opcion=aleatorio(4, 1);
+					opcion=numeroAleatorioRepetido(opcion,opcionNueva,4,1);
+					switch (opcion) {
+					case 1:			
+						datoNuevo=individuo.getCromosoma()[i][j];
+						dato=aleatorio(9, 1);
+						dato=numeroAleatorioRepetido(dato, datoNuevo, 9,1);
+						individuo.getCromosomaActivo()[i][j]=false;
+						individuo.getCromosoma()[i][j]=dato;						
+						break;
+					case 2:
+						individuo.getCromosomaActivo()[i][j]=false;
+						individuo.getCromosoma()[i][j]=padre.get(pos2).getCromosoma()[i][j];
+						break;
+					case 3:
+						individuo.getCromosomaActivo()[i][j]=false;
+						individuo.getCromosoma()[i][j]=padre.get(pos1).getCromosoma()[i][j];
+						break;	
+					case 4:
+						int rep=0,rep2=0;
+						bucle3:
+							for (int k = 0; k < 9; k++) {
+								for (int k2 = 0; k2 < 9; k2++) {
+									if(individuo.getCromosomaActivo()[k][k2]==false && false==individuo.getCromosomaActivo()[i][j] && i!=k && j!=k2){
+										rep2=individuo.getCromosoma()[k][k2];
+										rep=individuo.getCromosoma()[i][j];
+										individuo.getCromosoma()[k][k2]=rep;
+										individuo.getCromosoma()[i][j]=rep2;
+										individuo.getCromosomaActivo()[i][j]=false;
+										individuo.getCromosomaActivo()[k][k2]=false;
+										break bucle3;
+									}
+								}
+							} 
+						break;
+
+
 					}
 				}
 			}
 		}
-		if(individuo.getFitnes()>=241)
-			individuo=mutacion(individuo);	
+
 		individuo.calcularFitnes();	
 
 		individuo.coincidencias();
@@ -182,22 +226,7 @@ public class Algoritmo {
 		individuo.mostrarCromosomaActivo();
 		return individuo;
 	}
-	private Individuo mutacion(Individuo individuo){
-		bucle:
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < 9; j++) {
-					if(individuo.getCromosomaActivo()[i][j]==false){
-						int datoNuevo=individuo.getCromosoma()[i][j];
-						int dato=aleatorio(9, 1);
-						dato=numeroAleatorioRepetido(dato, datoNuevo, 9,1);
-						individuo.getCromosoma()[i][j]=dato;
 
-						break bucle;
-					}
-				}
-			}
-	return individuo;
-	}
 	private void mostraPoblacion(){
 		for (int i = 0; i < poblacion.size(); i++) {
 			System.out.println("-----------------------------");
