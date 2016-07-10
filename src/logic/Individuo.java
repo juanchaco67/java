@@ -139,7 +139,8 @@ public class Individuo {
 		}
 		return false;
 	}
-	public boolean estaCuadrante(int row,int col,int posRow,int posCol,int dato){
+	public int []elegirCuadrante(int row ,int col){
+		int []cuadrante=new int [2];
 		if(row>=0 && row<=2){
 			if(col>=0 && col<=2){
 				row=0;
@@ -182,7 +183,17 @@ public class Individuo {
 				col=6;
 			}			
 
-		}					
+		}	
+		cuadrante[0]=row;
+		cuadrante[1]=col;
+		return  cuadrante;
+		
+	}
+	public boolean estaCuadrante(int row,int col,int posRow,int posCol,int dato){
+		int cuadrante[]=elegirCuadrante(row, col);
+		row=cuadrante[0];
+		col=cuadrante[1];
+		
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				if(cromosoma[i+row][j+col]==dato && (i+row)!=posRow && (j+col) !=posCol)
@@ -192,24 +203,30 @@ public class Individuo {
 		return false;
 	}
 	public void coincidencias(){
-		int aux=0;
+
 		for (int i = 0; i < ROW; i++) {		
 			for (int j = 0; j < COL-3; j++) {
 				if(!cromosomaActivoEstaticas[i][j]){
-					aux=0;
-					if(!estafila(i, j, cromosoma[i][j]))
-						aux++;
-					if(!estaColumna(j,i,cromosoma[i][j]))
-						aux++;
-					if(!estaCuadrante(i,j,i,j,cromosoma[i][j]))
-						aux++;				
-					if(aux==3 )
+					if(estaArea(i, j,cromosoma[i][j]))
 						cromosomaActivo[i][j]=true;
 					else
 						cromosomaActivo[i][j]=false;
 				}
 			}
 		}
+	}
+	public boolean estaArea(int i,int j,int dato){
+		int aux=0;
+		if(!estafila(i, j, dato))
+			aux++;
+		if(!estaColumna(j,i,dato))
+			aux++;
+		if(!estaCuadrante(i,j,i,j,dato))
+			aux++;
+		if(aux==3)
+			return true;
+		else
+			return false;
 	}
 	public int cantidadCromosomaActivo(){
 		int aux=0;
